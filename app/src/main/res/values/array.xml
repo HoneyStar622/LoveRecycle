@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<resources>
+    <string-array name="category_value">
+        <item>其他物品</item>
+        <item>电子产品</item>
+        <item>学习用品</item>
+        <item>图书文娱</item>
+        <item>办公用品</item>
+        <item>男士服装</item>
+        <item>女士服装</item>
+        <item>男士鞋靴</item>
+        <item>女士鞋靴</item>
+        <item>服饰配饰</item>
+        <item>个护美妆</item>
+        <item>运动器具</item>
+        <item>食品生鲜</item>
+    </string-array>
+</resources>
