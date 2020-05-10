@@ -41,7 +41,7 @@ import rx.schedulers.Schedulers;
 import static com.example.loverecycle.Constants.SERVER_IP;
 
 public class MainFragment extends Fragment {
-    public String TAG = "debug";
+    public String TAG = "MainFragment:debug";
     private List<ActivityBean> activityList = new ArrayList<>();
     private ActivityAdapter adapter;
     private RecyclerView recyclerView;

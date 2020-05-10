@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,33 +9,141 @@
     tools:context="com.example.loverecycle.ui.fragment.MyFragment">
 
     <!--头像-->
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_gravity="center"
-        android:src="@mipmap/add"
-        />
+    <com.xuexiang.xui.widget.imageview.RadiusImageView
+        android:id="@+id/user_img"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:clickable="true"
+        android:gravity="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="18dp"
+        android:layout_marginLeft="30dp"
+        android:src="@drawable/add_img"
+        app:riv_border_color="@color/xui_config_color_gray_6"
+        app:riv_border_width="1px"
+        app:riv_corner_radius="15dp"
+        app:riv_selected_border_color="@color/xui_config_color_gray_4"
+        app:riv_selected_border_width="1px"
+        app:riv_selected_mask_color="@color/xui_config_color_gray_8" />
 
     <TextView
-        android:id="@+id/Name"
+        android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/user_img"
+        android:layout_marginTop="22dp"
         android:layout_gravity="center"
         android:gravity="center"
+        android:text="用户名"
         android:layout_marginStart="20dp"
-        android:layout_marginBottom="15dp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="25sp" />
 
+    <TextView
+        android:id="@+id/user_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/user_name"
+        android:layout_marginTop="33dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="ID"
+        android:layout_marginStart="20dp"
+        android:textColor="@color/xui_config_color_gray_4"
+        android:textSize="15sp" />
 
+    <TextView
+        android:id="@+id/user_email_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/user_name"
+        app:layout_constraintLeft_toRightOf="@id/user_img"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="邮箱 : "
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="15dp"
+        android:textColor="@color/xui_config_color_gray_4"
+        android:textSize="15sp" />
 
-    <!--其余选项-->
-    <ListView
+    <TextView
+        android:id="@+id/user_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/user_name"
+        app:layout_constraintLeft_toRightOf="@id/user_email_hint"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="邮箱 : "
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="15dp"
+        android:textColor="@color/xui_config_color_gray_4"
+        android:textSize="15sp" />
+
+    <View
+        android:id="@+id/view3"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/mylist" />
+        android:layout_marginTop="30dp"
+        android:layout_height="3dp"
+        app:layout_constraintTop_toBottomOf="@id/user_img"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="vertical"
+        android:background="#eef3f7" />
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/user_time_img"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/my_change"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view3"
+        >
+    </ImageView>
+
+    <TextView
+        android:id="@+id/user_time_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        app:layout_constraintTop_toBottomOf="@id/view3"
+        app:layout_constraintLeft_toRightOf="@id/user_time_img"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="公益时 : 10"
+        android:layout_marginStart="18dp"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginTop="10dp"
+        android:background="#eef3f7"
+        android:orientation="vertical"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/user_time_hint" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_my"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/view4"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

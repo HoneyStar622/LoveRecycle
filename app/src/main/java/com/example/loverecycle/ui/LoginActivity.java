@@ -8,8 +8,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.content.SharedPreferences;
 import android.widget.Button;
@@ -21,9 +26,12 @@ import android.widget.Toast;
 import com.example.loverecycle.R;
 import com.example.loverecycle.beans.TokenBean;
 import com.example.loverecycle.beans.UserBean;
+import com.example.loverecycle.http.HttpHelp;
 import com.example.loverecycle.http.HttpRequest_Interface;
+import com.example.loverecycle.utils.XToastUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.xuexiang.xui.widget.toast.XToast;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -52,21 +60,29 @@ import static com.example.loverecycle.Constants.SERVER_IP;
 public class LoginActivity extends AppCompatActivity {
 
     private boolean isRig = false;
+    private boolean codeRig = false;
     private Bitmap bitmap;
     private EditText user;
     private Button btnSignIn;
-    private EditText email;
+    private Button btnCode;
+    private EditText etCode;
+    private EditText etEmail;
     private EditText new_email;
     private EditText password;
     private EditText new_password;
     private EditText con_password;
     private RadioGroup radioGroup;
+    private RadioButton btnLogin;
     public static final String EXTRAS_ENDLESS_MODE = "EXTRAS_ENDLESS_MODE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        XToast.Config.get()
+                //位置设置为居中
+                .setGravity(Gravity.CENTER);
         setViews();
 
         Context context = null;
@@ -79,7 +95,68 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPref = context.getSharedPreferences(PREFERENCE_NAME, MODE);
         final SharedPreferences.Editor editor = sharedPref.edit();
 
+        final MyCountDownTimer myCountDownTimer = new MyCountDownTimer(60000,1000);
+        btnCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String email = new_email.getText().toString();
 
+                if (TextUtils.isEmpty(email)){//邮箱为空
+                    XToastUtils.warning("邮箱不能为空");
+                }
+                else if (!isEmail(email)) {//邮箱格式验证
+                    XToastUtils.warning("邮箱格式不正确");
+                }
+                else {
+                    int num = (int) ((Math.random() * 9 + 1) * 100000);
+                    final String code = Integer.toString(num);
+                    Log.d("TAGCode", code);
+                    final Handler handle = new Handler() {
+                        @Override
+                        public void handleMessage(Message msg) {
+                            switch (msg.what) {
+                                case 0:
+                                    XToastUtils.success("发送验证码");
+                                    myCountDownTimer.start();
+                                    break;
+                            }
+                        };
+                    };
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            HttpHelp.getInstance().sendMail(code, email);
+                            Message msg = new Message();
+                            msg.what = 0;
+                            handle.sendMessage(msg);
+                        }
+                    }).start();
+
+                    etCode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                        @Override
+                        public void onFocusChange(View v, boolean hasFocus) {
+                            if(hasFocus){
+
+                            }
+                            else {
+                                String code1 = etCode.getText().toString();
+                                if (code.equals(code1)) {
+                                    myCountDownTimer.Success();
+                                    XToastUtils.success("验证成功");
+                                    codeRig = true;
+                                    btnCode.setClickable(false);
+                                    etCode.setEnabled(false);
+                                    new_email.setEnabled(false);
+                                }
+                                else {
+                                    XToastUtils.error("验证码错误");
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
             @Override
@@ -87,17 +164,15 @@ public class LoginActivity extends AppCompatActivity {
                 final RadioButton rbutton = (RadioButton) findViewById(group.getCheckedRadioButtonId());
                 if (rbutton.getText().toString().equals("Register")) {
                     btnSignIn.setText("注册");
-                    btnSignIn.setEnabled(true);
                     findViewById(R.id.ll_login).setVisibility(View.GONE);
                     findViewById(R.id.ll_register).setVisibility(View.VISIBLE);
-
                     isRig = true;
                 }
                 else {
                     findViewById(R.id.ll_login).setVisibility(View.VISIBLE);
                     findViewById(R.id.ll_register).setVisibility(View.GONE);
                     btnSignIn.setEnabled(true);
-                    email.setEnabled(true);
+                    etEmail.setEnabled(true);
                     password.setEnabled(true);
                     btnSignIn.setText("登录");
                     isRig = false;
@@ -107,16 +182,16 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+
+
         btnSignIn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
 
-
-
                 //注册时
                 String username = user.getText().toString();
-                String userEmail = email.getText().toString();
+                String userEmail = etEmail.getText().toString();
                 String newEmail = new_email.getText().toString();
                 String passwords = password.getText().toString();//字符串密码
                 String password1 = new_password.getText().toString();
@@ -124,28 +199,30 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(isRig) {
                     if (TextUtils.isEmpty(newEmail)){//邮箱为空
-                        Toast.makeText(LoginActivity.this, "邮箱不能为空.", Toast.LENGTH_SHORT).show();
+                        XToastUtils.warning("邮箱不能为空");
                     }
                     else if (!isEmail(newEmail)) {//邮箱格式验证
-                        Toast.makeText(LoginActivity.this, "邮箱格式不正确.", Toast.LENGTH_SHORT).show();
+                        XToastUtils.warning("邮箱格式不正确");
                     }
                     else if (TextUtils.isEmpty(username)){//用户名为空
-                        Toast.makeText(LoginActivity.this, "用户名不能为空.", Toast.LENGTH_SHORT).show();
+                        XToastUtils.warning("用户名不能为空");
                     }
-                    else if (TextUtils.isEmpty(password1) && TextUtils.isEmpty(password2)){//密码为空
-                        Toast.makeText(LoginActivity.this, "密码不能为空.", Toast.LENGTH_SHORT).show();
+                    else if (TextUtils.isEmpty(password1) || TextUtils.isEmpty(password2)){//密码为空
+                        XToastUtils.warning("密码不能为空");
                     }
                     else if (!password1.equals(password2)) {
-                        Toast.makeText(LoginActivity.this, "密码不匹配.", Toast.LENGTH_SHORT).show();
+                        XToastUtils.warning("密码不匹配");
+                    }
+                    else if (!codeRig) {
+                        XToastUtils.warning("邮箱未验证");
                     }
                     else {
                         //网络请求，查询数据库
                         if(isConn(LoginActivity.this) == false) {
-                            Toast.makeText(LoginActivity.this, "网络连接失败", Toast.LENGTH_SHORT).show();
+                            XToastUtils.error("网络连接失败");
                         }
                         else {
-
-                            Toast.makeText(LoginActivity.this, "注册中", Toast.LENGTH_SHORT).show();
+                            XToastUtils.toast("注册中");
 
                             OkHttpClient build = new OkHttpClient.Builder()
                                     .connectTimeout(2, TimeUnit.SECONDS)
@@ -185,7 +262,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 try {
                                                     HashMap<String,Object> error = new Gson().fromJson(body.string(), new TypeToken<HashMap<String,Object>>(){}.getType());
                                                     Map<String , Object> embody = ( Map<String , Object>) error.get("error");
-
+                                                    XToastUtils.error("邮箱或用户名已存在");
                                                     Log.d("TAG", embody.get("message").toString());
                                                     Log.d("Error",body.string());
                                                 } catch (IOException IOe) {
@@ -201,7 +278,8 @@ public class LoginActivity extends AppCompatActivity {
                                             findViewById(R.id.ll_register).setVisibility(View.GONE);
                                             btnSignIn.setText("登录");
                                             isRig = false;
-                                            Toast.makeText(LoginActivity.this, user1.getUsername()+"注册成功", Toast.LENGTH_SHORT).show();
+                                            btnLogin.setChecked(true);
+                                            XToastUtils.success(user1.getUsername()+"注册成功");
                                         }
 
                                     });
@@ -210,19 +288,16 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 //登陆时
                 else {
-                    btnSignIn.setEnabled(false);
-                    email.setEnabled(false);
-                    password.setEnabled(false);
                     userEmail = "1299927852@qq.com";
                     passwords = "wanggh8";
                     if (TextUtils.isEmpty(userEmail)){//邮箱为空
-                        Toast.makeText(LoginActivity.this, "邮箱不能为空.", Toast.LENGTH_SHORT).show();
+                        XToastUtils.warning("邮箱不能为空");
                     }
                     else if (!isEmail(userEmail)) {//邮箱格式验证
-                        Toast.makeText(LoginActivity.this, "邮箱格式不正确.", Toast.LENGTH_SHORT).show();
+                        XToastUtils.warning("邮箱格式不正确");
                     }
                     else if (passwords.equals("")) {//密码为空
-                        Toast.makeText(LoginActivity.this, "密码不能为空.", Toast.LENGTH_SHORT).show();
+                        XToastUtils.warning("密码不能为空");
                     }
                     else {//都不为空
 
@@ -265,9 +340,9 @@ public class LoginActivity extends AppCompatActivity {
 
                                                 Log.d("TAG", embody.get("message").toString());
                                                 Log.d("Error",body.string());
-                                                Toast.makeText(LoginActivity.this, "邮箱或密码不正确", Toast.LENGTH_SHORT).show();
+                                                XToastUtils.error("邮箱或密码不正确");
                                                 btnSignIn.setEnabled(true);
-                                                email.setEnabled(true);
+                                                etEmail.setEnabled(true);
                                                 password.setEnabled(true);
                                             } catch (IOException IOe) {
                                                 IOe.printStackTrace();
@@ -284,6 +359,7 @@ public class LoginActivity extends AppCompatActivity {
                                         editor.putString("Token", token);
                                         editor.putLong("UserId", cid);
                                         editor.commit();
+                                        XToastUtils.success("登录成功");
                                         //Toast.makeText(LoginActivity.this, ctoken.getId(), Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                         //Toast.makeText(LoginActivity.this, "Invalid Password.", Toast.LENGTH_SHORT).show();
@@ -306,14 +382,54 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setViews() {
         user = findViewById(R.id.username);
-        email = findViewById(R.id.email);
+        etEmail = findViewById(R.id.email);
         new_email = findViewById(R.id.newEmail);
         password = findViewById(R.id.password);
         new_password = findViewById(R.id.newPassword);
         con_password = findViewById(R.id.confirmPassword);
         radioGroup = findViewById(R.id.radioGroup);
         btnSignIn = findViewById(R.id.btnSignIn);
+        btnCode = findViewById(R.id.btn_login_send);
+        etCode = findViewById(R.id.et_login_code);
+        btnSignIn.setClickable(false);
+        btnLogin = findViewById(R.id.login);
     }
+
+    private class MyCountDownTimer extends CountDownTimer {
+
+        public MyCountDownTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        //计时过程
+        @Override
+        public void onTick(long l) {
+            //防止计时过程中重复点击
+            btnCode.setClickable(false);
+            btnCode.setText(l/1000+"秒");
+
+        }
+
+        //计时完毕的方法
+        @Override
+        public void onFinish() {
+            //重新给Button设置文字
+            btnCode.setText("重新获取");
+            //设置可点击
+            btnCode.setClickable(true);
+        }
+
+        public void Success() {
+            btnCode.setClickable(false);
+            etCode.setEnabled(false);
+            btnCode.setText("验证成功");
+            new_email.setEnabled(false);
+            btnSignIn.setClickable(true);
+            super.cancel();
+        }
+
+    }
+
 
 
     public static boolean isConn(Context context){

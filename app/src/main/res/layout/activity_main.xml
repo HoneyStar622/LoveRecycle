@@ -21,7 +21,7 @@
             android:textSize="18dp"
             android:singleLine="true"
             android:textColor="#505050"
-            android:text="居中显示居中显示" />
+            android:text="爱心回收" />
     </androidx.appcompat.widget.Toolbar>
 
 
@@ -43,7 +43,8 @@
         <RadioButton
             android:id="@+id/rb_message"
             style="@style/tab_menu_item"
-            android:drawableTop="@drawable/tab_menu_message"
+
+            android:drawableTop="@drawable/tab_menu_order"
             android:text="@string/tab_menu_msg" />
 
         <RadioButton

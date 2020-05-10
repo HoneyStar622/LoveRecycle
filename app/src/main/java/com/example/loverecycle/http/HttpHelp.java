@@ -15,8 +15,16 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.MimeMessage;
 
 public class HttpHelp {
 
@@ -31,7 +39,23 @@ public class HttpHelp {
         return SingletonHolder.INSTANCE;
     }
 
-
+    public void sendMail(String code,String email){
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.163.com");
+        Session session = Session.getInstance(props, null);
+        try {
+            MimeMessage msg = new MimeMessage(session);
+            msg.setFrom("wanggh_8@163.com");
+            msg.setRecipients(Message.RecipientType.TO, email);
+            msg.setSubject("爱心回收验证");
+            msg.setSentDate(new Date());
+            msg.setText("Your Code：\n"+code);
+            Log.d("TAGHint", code);
+            Transport.send(msg, "wanggh_8@163.com", "XEMOFLIATLNBQZGH");
+        } catch (MessagingException mex) {
+            System.out.println("send failed, exception: " + mex);
+        }
+    }
     public Bitmap getURLimage(String url) {
         Bitmap bmp = null;
         try {

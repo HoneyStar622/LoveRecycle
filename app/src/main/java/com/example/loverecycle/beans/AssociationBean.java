@@ -1,6 +1,8 @@
 package com.example.loverecycle.beans;
 
-public class AssociationBean {
+import java.io.Serializable;
+
+public class AssociationBean implements Serializable {
 
     private Long associationId;
     private String name;

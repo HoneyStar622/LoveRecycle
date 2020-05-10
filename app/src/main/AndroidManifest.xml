@@ -15,49 +15,155 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission
+        android:name="android.permission.READ_CONTACTS"
+        android:exported="true" />
 
     <application
-        android:name="com.example.loverecycle.MyApp"
+        android:name=".MyApp"
         android:allowBackup="true"
-        tools:replace="android:icon, android:theme"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon, android:theme">
 
-        android:theme="@style/AppTheme">
-
-        <activity android:name="com.example.loverecycle.ui.LaunchActivity">
+        <activity android:name=".ui.LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!-- 主界面 -->
+        </activity> <!-- 主界面 -->
         <activity
-            android:name="com.example.loverecycle.ui.MainActivity"
+            android:name=".ui.MainActivity"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity">
-        </activity>
-        <!-- 登录界面 -->
+            tools:ignore="LockedOrientationActivity" /> <!-- 登录界面 -->
         <activity
-            android:name="com.example.loverecycle.ui.LoginActivity"
+            android:name=".ui.LoginActivity"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity">
-        </activity>
-        <!-- 具体活动界面 -->
+            tools:ignore="LockedOrientationActivity" /> <!-- 具体活动界面 -->
         <activity
-            android:name="com.example.loverecycle.ui.ActivityItemActivity"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
+            android:name=".ui.ActivityItemActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
-            android:windowSoftInputMode="adjustPan">
-
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            tools:ignore="LockedOrientationActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.loverecycle.ui.MainActivity" />
+        </activity> <!-- 具体订单界面 -->
+        <activity
+            android:name=".ui.OrderInfoActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            tools:ignore="LockedOrientationActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.loverecycle.ui.MainActivity" />
+        </activity> <!-- 意见反馈界面 -->
+        <activity
+            android:name=".ui.my.AdviseActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            tools:ignore="LockedOrientationActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.loverecycle.ui.MainActivity" />
+        </activity> <!-- 密码修改界面 -->
+        <activity
+            android:name=".ui.my.ChangePsdActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            tools:ignore="LockedOrientationActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.loverecycle.ui.MainActivity" />
+        </activity> <!-- 关于我们界面 -->
+        <activity
+            android:name=".ui.my.InfoActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            tools:ignore="LockedOrientationActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.loverecycle.ui.MainActivity" />
+        </activity> <!-- 设置界面 -->
+        <activity
+            android:name=".ui.my.SettingActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            tools:ignore="LockedOrientationActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.loverecycle.ui.MainActivity" />
+        </activity> <!-- 社团界面 -->
+        <activity
+            android:name=".ui.my.MyAssociationActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            tools:ignore="LockedOrientationActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.loverecycle.ui.MainActivity" />
+        </activity> <!-- 信息修改界面 -->
+        <activity
+            android:name=".ui.my.EditMyInfoActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            tools:ignore="LockedOrientationActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.loverecycle.ui.MainActivity" />
+        </activity> <!-- 创建活动界面 -->
+        <activity
+            android:name=".ui.NewActivityActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            tools:ignore="LockedOrientationActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.loverecycle.ui.my.MyAssociationActivity" />
+        </activity> <!-- 社团成员界面 -->
+        <activity
+            android:name=".ui.AssociationMemberActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            tools:ignore="LockedOrientationActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.loverecycle.ui.my.MyAssociationActivity" />
         </activity>
+        <activity android:name=".ui.OrderCheckActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            tools:ignore="LockedOrientationActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.loverecycle.ui.my.MyAssociationActivity"/>
+        </activity>
+        <activity android:name=".ui.ActivityMemberActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            tools:ignore="LockedOrientationActivity">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.example.loverecycle.ui.my.MyAssociationActivity"/>
+        </activity>
+
     </application>
 
 </manifest>

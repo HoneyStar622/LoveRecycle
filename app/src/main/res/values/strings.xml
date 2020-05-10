@@ -17,7 +17,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="tab_menu_main">主页</string>
-    <string name="tab_menu_msg">信息</string>
+    <string name="tab_menu_msg">订单</string>
     <string name="tab_menu_my">我的</string>
 
 
@@ -45,5 +45,24 @@
     <string name="regex_password">^(?:(?=.*[a-zA-Z])(?=.*[0-9])).{8,18}$</string>
     <string name="title_forget_password">重置密码</string>
     <string name="lab_register_account">点击注册即表示同意</string>
+
+
+    <string name="advise_info">你的意见对我们来说至关重要，感谢你的反馈</string>
+    <string name="advise_hint">欢迎吐槽提意见</string>
+    <string name="advise_email">请填写邮箱，方便我们联系</string>
+    <string name="advise_send">发送</string>
+
+    <string name="changepsd_hint">通过你注册的邮箱，修改或找回密码</string>
+    <string name="changepsd_email">填写邮箱，修改密码</string>
+    <string name="changepsd_send">发送验证码</string>
+    <string name="changepsd_code_hint">填写验证码</string>
+    <string name="changepsd_password1_hint">输入新密码</string>
+    <string name="changepsd_password2_hint">重复输入密码</string>
+    <string name="changepsd_commit">修改密码</string>
+
+    <string name="edit_info_my_name">用户名</string>
+    <string name="edit_info_my_info">用户简介</string>
+    <string name="edit_info_my_commit">修改信息</string>
+
 
 </resources>

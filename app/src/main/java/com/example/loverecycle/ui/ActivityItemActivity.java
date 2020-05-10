@@ -209,8 +209,8 @@ public class ActivityItemActivity extends AppCompatActivity {
         tvToolBarName.setText(mActivity.getName());
         tvActivityInfo.setText(mActivity.getInfo());
         //tvAssociation.setText(mActivity);
-        tvStartDate.setText(ActivityAdapter.UTCStringtODefaultString(mActivity.getStartDate()));
-        tvEndDate.setText(ActivityAdapter.UTCStringtODefaultString(mActivity.getEndDate()));
+        tvStartDate.setText("开始日期："+ActivityAdapter.UTCStringtODefaultString(mActivity.getStartDate()));
+        tvEndDate.setText("结束日期："+ActivityAdapter.UTCStringtODefaultString(mActivity.getEndDate()));
         Log.d(TAG, mActivity.getAssociationId().toString());
         getAssociation(mActivity.getAssociationId());
         Glide.with(this).load(IMG_IP+mActivity.getIcon()).into(activityImg);
@@ -375,6 +375,7 @@ public class ActivityItemActivity extends AppCompatActivity {
                 if (selectList.size() > 0) {
                     LocalMedia media = selectList.get(position);
                     String pictureType = media.getPictureType();
+                    Log.d(TAG, pictureType);
                     int mediaType = PictureMimeType.pictureToVideo(pictureType);
                     switch (mediaType) {
                         case 1:
@@ -460,7 +461,8 @@ public class ActivityItemActivity extends AppCompatActivity {
                 selectList.addAll(images);
 
                 Log.d(TAG, "onActivityResult: "+images.get(0).getPath());
-
+                adapter.setList(selectList);
+                adapter.notifyDataSetChanged();
 
                 //selectList = PictureSelector.obtainMultipleResult(data);
 
@@ -469,8 +471,7 @@ public class ActivityItemActivity extends AppCompatActivity {
                 // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
                 // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
                 // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
-                adapter.setList(selectList);
-                adapter.notifyDataSetChanged();
+
             }
         }
         if (requestCode == 1 && resultCode == 2) {

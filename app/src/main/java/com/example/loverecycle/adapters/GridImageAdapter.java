@@ -27,6 +27,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.loverecycle.Constants.IMG_IP;
+
 /**
  * author：luck
  * project：PictureSelector
@@ -36,6 +38,7 @@ import java.util.List;
 public class GridImageAdapter extends RecyclerView.Adapter<GridImageAdapter.ViewHolder> {
     public static final int TYPE_CAMERA = 1;
     public static final int TYPE_PICTURE = 2;
+    private boolean isEdit = true;
     private LayoutInflater mInflater;
     private List<LocalMedia> list = new ArrayList<>();
     private int selectMax = 9;
@@ -63,6 +66,10 @@ public class GridImageAdapter extends RecyclerView.Adapter<GridImageAdapter.View
         this.list = list;
     }
 
+    public List<LocalMedia> getList() {
+        return list;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView mImg;
@@ -79,7 +86,7 @@ public class GridImageAdapter extends RecyclerView.Adapter<GridImageAdapter.View
 
     @Override
     public int getItemCount() {
-        if (list.size() < selectMax) {
+        if (isEdit && list.size() < selectMax) {
             return list.size() + 1;
         } else {
             return list.size();
@@ -88,6 +95,9 @@ public class GridImageAdapter extends RecyclerView.Adapter<GridImageAdapter.View
 
     @Override
     public int getItemViewType(int position) {
+        if (!isEdit) {
+            return TYPE_PICTURE;
+        }
         if (isShowAddItem(position)) {
             return TYPE_CAMERA;
         } else {
@@ -109,6 +119,14 @@ public class GridImageAdapter extends RecyclerView.Adapter<GridImageAdapter.View
         return position == size;
     }
 
+    public void setNoEdit() {
+        isEdit = false;
+    }
+
+    public void setEdit() {
+        isEdit = true;
+    }
+
     /**
      * 设置值
      */
@@ -125,21 +143,27 @@ public class GridImageAdapter extends RecyclerView.Adapter<GridImageAdapter.View
             });
             viewHolder.ll_del.setVisibility(View.INVISIBLE);
         } else {
-            viewHolder.ll_del.setVisibility(View.VISIBLE);
-            viewHolder.ll_del.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int index = viewHolder.getAdapterPosition();
-                    // 这里有时会返回-1造成数据下标越界,具体可参考getAdapterPosition()源码，
-                    // 通过源码分析应该是bindViewHolder()暂未绘制完成导致，知道原因的也可联系我~感谢
-                    if (index != RecyclerView.NO_POSITION) {
-                        list.remove(index);
-                        notifyItemRemoved(index);
-                        notifyItemRangeChanged(index, list.size());
-                        Log.i("delete position:", index + "--->remove after:" + list.size());
+            if (!isEdit) {
+                viewHolder.ll_del.setVisibility(View.INVISIBLE);
+            }
+            else {
+                viewHolder.ll_del.setVisibility(View.VISIBLE);
+                viewHolder.ll_del.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int index = viewHolder.getAdapterPosition();
+                        // 这里有时会返回-1造成数据下标越界,具体可参考getAdapterPosition()源码，
+                        // 通过源码分析应该是bindViewHolder()暂未绘制完成导致，知道原因的也可联系我~感谢
+                        if (index != RecyclerView.NO_POSITION) {
+                            list.remove(index);
+                            notifyItemRemoved(index);
+                            notifyItemRangeChanged(index, list.size());
+                            Log.i("delete position:", index + "--->remove after:" + list.size());
+                        }
                     }
-                }
-            });
+                });
+            }
+
             LocalMedia media = list.get(position);
             int mimeType = media.getMimeType();
             String path;
@@ -151,7 +175,7 @@ public class GridImageAdapter extends RecyclerView.Adapter<GridImageAdapter.View
                 path = media.getCompressPath();
             } else {
                 // 原图
-                path = media.getPath();
+                path = IMG_IP+media.getPath();
             }
             // 图片
             if (media.isCompressed()) {
@@ -165,29 +189,22 @@ public class GridImageAdapter extends RecyclerView.Adapter<GridImageAdapter.View
                 Log.i("裁剪地址::", media.getCutPath());
             }
             long duration = media.getDuration();
-            viewHolder.tv_duration.setVisibility(pictureType == PictureConfig.TYPE_VIDEO
-                    ? View.VISIBLE : View.GONE);
-            if (mimeType == PictureMimeType.ofAudio()) {
-                viewHolder.tv_duration.setVisibility(View.VISIBLE);
-                Drawable drawable = ContextCompat.getDrawable(context, R.drawable.picture_audio);
-                StringUtils.modifyTextViewDrawable(viewHolder.tv_duration, drawable, 0);
-            } else {
-                Drawable drawable = ContextCompat.getDrawable(context, R.drawable.video_icon);
-                StringUtils.modifyTextViewDrawable(viewHolder.tv_duration, drawable, 0);
-            }
+            viewHolder.tv_duration.setVisibility(View.GONE);
+
+            Drawable drawable = ContextCompat.getDrawable(context, R.drawable.video_icon);
+            StringUtils.modifyTextViewDrawable(viewHolder.tv_duration, drawable, 0);
+
             viewHolder.tv_duration.setText(DateUtils.timeParse(duration));
-            if (mimeType == PictureMimeType.ofAudio()) {
-                viewHolder.mImg.setImageResource(R.drawable.audio_placeholder);
-            } else {
-                RequestOptions options = new RequestOptions()
-                        .centerCrop()
-                        .placeholder(R.color.color_f6)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL);
-                Glide.with(viewHolder.itemView.getContext())
-                        .load(path)
-                        .apply(options)
-                        .into(viewHolder.mImg);
-            }
+            Log.d("地址pathTAG", path);
+            RequestOptions options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.color.color_f6)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+            Glide.with(viewHolder.itemView.getContext())
+                    .load(path)
+                    .apply(options)
+                    .into(viewHolder.mImg);
+
             //itemView 的点击事件
             if (mItemClickListener != null) {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {

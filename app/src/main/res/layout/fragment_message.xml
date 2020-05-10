@@ -6,13 +6,9 @@
     android:background="@color/bg_white"
     tools:context="com.example.loverecycle.ui.fragment.MessageFragment">
 
-    <TextView
-        android:id="@+id/txt_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_order"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="消息"
-        android:textColor="@color/text_yellow"
-        android:textSize="20sp"/>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

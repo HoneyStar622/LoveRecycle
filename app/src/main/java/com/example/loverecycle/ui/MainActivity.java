@@ -83,10 +83,10 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
         Intent intent =getIntent();
         Bundle mbundle = intent.getExtras();
-        if (mbundle!= null && mbundle.getInt("fragment_flag") == 1){
-            Log.d("测试Intent", String.valueOf(1));
-            setFragment(1);
+        if (mbundle!= null ){
+            setFragment(mbundle.getInt("fragment_flag"));
         }
+
 
 
 
@@ -168,15 +168,12 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         switch (checkedId){
             case R.id.rb_main:
                 setFragment(FRAGMENT_MAIN);
-                rb_main.setChecked(true);
                 break;
             case R.id.rb_message:
                 setFragment(FRAGMENT_MESSAGE);
-                rb_message.setChecked(true);
                 break;
             case R.id.rb_my:
                 setFragment(FRAGMENT_MY);
-                rb_my.setChecked(true);
                 break;
         }
     }

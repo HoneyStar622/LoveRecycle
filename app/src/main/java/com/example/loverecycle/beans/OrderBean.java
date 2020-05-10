@@ -1,10 +1,12 @@
 package com.example.loverecycle.beans;
 
+import java.io.Serializable;
+
 /**
  * 赠送物品
  */
-public class OrderBean {
-    private Long id;
+public class OrderBean implements Serializable {
+    private Long orderId;
     private String category;
     private String info;
     private String picture;
@@ -16,7 +18,7 @@ public class OrderBean {
     private Long activityId;
 
     public OrderBean(Long id, String category, String info, String picture, String state, String repay, String date, String palce, Long accountId, Long activityId) {
-        this.id = id;
+        this.orderId = id;
         this.category = category;
         this.info = info;
         this.picture = picture;
@@ -28,12 +30,12 @@ public class OrderBean {
         this.activityId = activityId;
     }
 
-    public Long getId() {
-        return id;
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setOrderId(Long id) {
+        this.orderId = id;
     }
 
     public String getCategory() {
