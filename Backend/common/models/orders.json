@@ -1,0 +1,59 @@
+{
+  "name": "Orders",
+  "plural": "orders",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "orderId": {
+      "type": "number",
+      "id": true,
+      "generated": true
+    },
+    "category": {
+      "type": "string",
+      "default": ""
+    },
+    "info": {
+      "type": "String",
+      "default": ""
+    },
+    "picture": {
+      "type": "String",
+      "default": ""
+    },
+    "state": {
+      "type": "String",
+      "default": ""
+    },
+    "repay": {
+      "type": "String",
+      "default": ""
+    },
+    "date": {
+      "type": "String",
+      "default": ""
+    },
+    "place": {
+      "type": "String",
+      "default": ""
+    }
+  },
+  "validations": [],
+  "relations": {
+    "account": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "accountId"
+    },
+    "activity": {
+      "type": "belongsTo",
+      "model": "Activity",
+      "foreignKey": "activityId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

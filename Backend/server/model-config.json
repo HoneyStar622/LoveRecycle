@@ -1,0 +1,71 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "User": {
+    "dataSource": "db",
+    "public": false
+  },
+  "AccessToken": {
+    "dataSource": "db",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "db",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "db",
+    "public": false,
+    "options": {
+      "strictObjectIDCoercion": true
+    }
+  },
+  "Role": {
+    "dataSource": "db",
+    "public": false
+  },
+  "Account": {
+    "dataSource": "db1",
+    "public": true
+  },
+  "Activity": {
+    "dataSource": "db1",
+    "public": true
+  },
+  "Association": {
+    "dataSource": "db1",
+    "public": true
+  },
+  "Container": {
+    "dataSource": "picture",
+    "public": true
+  },
+  "StorageFile": {
+    "dataSource": "db1",
+    "public": true
+  },
+  "Orders": {
+    "dataSource": "db1",
+    "public": true
+  },
+  "AssociationAccount": {
+    "dataSource": "db1",
+    "public": true
+  },
+  "ActivityAccount": {
+    "dataSource": "db1",
+    "public": true
+  }
+}

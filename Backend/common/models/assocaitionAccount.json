@@ -1,0 +1,27 @@
+{
+    "name": "AssociationAccount",
+    "plural": "associationAccount",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+      "validateUpsert": true
+    },
+    "properties": {
+     
+    },
+    "validations": [],
+    "relations": { 
+        "Account": {
+            "type": "belongsTo",
+            "model": "Account",
+            "foreignKey": "accountId" 
+        },
+        "Association": {
+            "type": "belongsTo",
+            "model": "Association",
+            "foreignKey": "associationId"
+        }
+    },
+    "acls": [],
+    "methods": {}
+  }

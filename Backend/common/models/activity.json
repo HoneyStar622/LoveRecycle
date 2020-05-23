@@ -1,0 +1,55 @@
+{
+  "name": "Activity",
+  "plural": "activity",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "activityId": {
+      "type": "number",
+      "id": true,
+      "generated": true
+    },
+    "icon": {
+      "type": "String",
+      "default": "/api/containers/common/download/activity_default1586056678282.png"
+    },
+    "name": {
+      "type": "String",
+      "default": ""
+    },
+    "info": {
+      "type": "String",
+      "default": "暂时没有介绍"
+    },
+    "startDate": {
+      "type": "date"
+    },
+    "endDate": {
+      "type": "date"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "association": {
+      "type": "belongsTo",
+      "model": "Association",
+      "foreignKey": "associationId"
+    },
+    "order": {
+      "type": "hasMany",
+      "model": "Order",
+      "foreignKey": "activityId"
+    },
+    "leadActivity": {
+      "type": "hasMany",
+      "model": "Account",
+      "foreignKey": "activityId",
+      "through": "ActivityAccount"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

@@ -1,0 +1,22 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "db1": {
+    "host": "localhost",
+    "port": 5432,
+    "url": "",
+    "database": "db1",
+    "password": "1234",
+    "name": "db1",
+    "user": "postgres",
+    "connector": "postgresql"
+  },
+  "picture": {
+    "name": "picture",
+    "connector": "loopback-component-storage",
+    "provider": "filesystem",
+    "root": "./server/storage"
+  }
+}

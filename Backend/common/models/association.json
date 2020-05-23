@@ -1,0 +1,49 @@
+{
+  "name": "Association",
+  "plural": "association",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    
+    "associationId": {
+      "type": "number",
+      "id": true,
+      "generated": true
+    },
+    "icon": {
+      "type": "String",
+      "default": "/api/containers/common/download/association_default1586057255976.png"
+    },
+    "name": {
+      "type": "string"
+    },
+    "info": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "validations": [],
+  "relations": {
+    "activity": {
+      "type": "hasMany",
+      "model": "Activity",
+      "foreignKey": "associationId"
+    },
+    "assistant": {
+      "type": "hasMany",
+      "model": "Account",
+      "foreignKey": "associationId",
+      "through": "AssociationAccount"
+    },
+    "minister": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "accountId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

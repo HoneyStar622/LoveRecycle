@@ -1,0 +1,27 @@
+{
+    "name": "ActivityAccount",
+    "plural": "activityAccount",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+      "validateUpsert": true
+    },
+    "properties": {
+     
+    },
+    "validations": [],
+    "relations": { 
+        "Account": {
+            "type": "belongsTo",
+            "model": "Account",
+            "foreignKey": "accountId" 
+        },
+        "Activity": {
+            "type": "belongsTo",
+            "model": "Activity",
+            "foreignKey": "activityId"
+        }
+    },
+    "acls": [],
+    "methods": {}
+  }
